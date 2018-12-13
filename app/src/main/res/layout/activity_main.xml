@@ -23,28 +23,4 @@
 
     <include layout="@layout/content_main"/>
 
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_bigger_margin"
-            app:srcCompat="@drawable/ic_pause_black_24dp"/>
-
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="@dimen/fab_bigger_margin"
-            app:srcCompat="@drawable/ic_play_arrow_black_24dp"/>
-
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_margin="@dimen/fab_bigger_margin"
-            app:srcCompat="@drawable/ic_stop_black_24dp"/>
-
 </android.support.design.widget.CoordinatorLayout>
