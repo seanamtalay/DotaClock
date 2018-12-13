@@ -14,8 +14,19 @@ import com.example.namtalaylaorat.dotaclock.util.PrefUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
+import android.graphics.drawable.ClipDrawable
+import android.graphics.drawable.Drawable
+import android.widget.ImageView
+
+
+
+
+
+
 class MainActivity : AppCompatActivity() {
 
+    lateinit var mImageDrawable: Drawable
+    lateinit var img: ImageView
 
     enum class TimerState{
          Stopped, Paused, Running
@@ -51,6 +62,12 @@ class MainActivity : AppCompatActivity() {
             onTimerFinished()
             updateButtons()
         }
+
+
+        //progress image level from 0 - 10000
+        img = runes_progress_dark_imageView as ImageView
+        mImageDrawable = img.drawable as ClipDrawable
+        mImageDrawable.level = 0
     }
 
     override fun onResume() {
@@ -109,12 +126,13 @@ class MainActivity : AppCompatActivity() {
     private fun startTimer(){
         timerState = TimerState.Running
 
-        timer = object : CountUpTimer(30000) {
+        timer = object : CountUpTimer(Long.MAX_VALUE) {
             override fun onTick(second: Int) {
                 secondsRemaining = second.toLong()
                 updateCountdownUI()
 
-                checkTimeCondition()
+                checkTimeCondition(3L)
+                progressDarkOverlayBounty()
             }
 
             override fun onFinish() = onTimerFinished()
@@ -139,8 +157,8 @@ class MainActivity : AppCompatActivity() {
         val secondsInMinuteUntilFinished = secondsRemaining - minutesUntilFinished * 60
         val secondsStr = secondsInMinuteUntilFinished.toString()
         countdown_textView.text = "$minutesUntilFinished:${
-        if(secondsStr.length == 2) secondsStr
-        else "0" + secondsStr
+            if(secondsStr.length == 2) secondsStr
+            else "0" + secondsStr
         }"
     }
 
@@ -164,12 +182,48 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkTimeCondition(){
+    /**
+     * Function that check if the time value(in seconds) has met any conditions.
+     * It will notify the use when a condition is met.
+     * The user can set how many seconds beforehand they want to be notified
+     */
+    private fun checkTimeCondition(secBefore: Long){
         //TODO check if 5min runes, stack time, rosh?
-        Log.d(TAG, "checkTimeCondition: second remaining: $secondsRemaining")
-        if(secondsRemaining%10 == 0L && secondsRemaining != 0L){
+
+        if(secondsRemaining%10 == (10L-secBefore)%10 && secondsRemaining != 0L){
             Toast.makeText(this@MainActivity, "10sec!", Toast.LENGTH_SHORT).show()
+            //increasing the dark layer overtime
+            mImageDrawable.level = mImageDrawable.level + 1000
         }
+
+        //Start match 0:00
+        if(secondsRemaining == 0L){
+            Toast.makeText(this@MainActivity, "The battle begins!", Toast.LENGTH_SHORT).show()
+        }
+
+        //Runes every 5 min
+        if((secondsRemaining%300) == (300L-secBefore)%300){
+            Toast.makeText(this@MainActivity, "Runes!", Toast.LENGTH_SHORT).show()
+            //clear bounty dark overlay progress
+            mImageDrawable.level = 0
+
+        }
+
+        //stack neutral creep. About every XX:52 seconds. Each camp stack time is not the same, so we are just going to use 52.
+        if((secondsRemaining%60) == (52L-secBefore)%60){
+            Toast.makeText(this@MainActivity, "Stack neutrals!", Toast.LENGTH_SHORT).show()
+        }
+
+        //rosh?
+
+    }
+
+    /**
+     * Make the bounty progress
+     * Level range is 0 - 10000
+     */
+    private fun progressDarkOverlayBounty(){
+        mImageDrawable.level = mImageDrawable.level + 10000/300 //300 for 5 min(300sec)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
