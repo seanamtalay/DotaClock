@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toStartOf="@+id/divider" android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"/>
     <TextView
-            android:text="Neutral camps"
+            android:text="Stack Neutrals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/neutrals_textView" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
@@ -64,29 +64,42 @@
             app:layout_constraintHorizontal_bias="0.507"
             android:layout_marginBottom="32dp" app:layout_constraintBottom_toTopOf="@+id/fab_play"/>
     <ImageView
-            android:layout_width="110dp"
-            android:layout_height="149dp" app:srcCompat="@drawable/bounty_rune"
+            android:layout_width="128dp"
+            android:layout_height="150dp" app:srcCompat="@drawable/bounty_rune"
             android:id="@+id/runes_progress_imageView" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/runes_textView" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toStartOf="@+id/divider" android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"/>
     <ImageView
-            android:layout_width="110dp"
-            android:layout_height="149dp"
+            android:layout_width="128dp"
+            android:layout_height="150dp"
             android:src="@drawable/clip_source_bounty"
             android:id="@+id/runes_progress_dark_imageView"
-            app:layout_constraintTop_toTopOf="@+id/runes_progress_imageView"
             app:layout_constraintStart_toStartOf="@+id/runes_progress_imageView"
-            android:tint="#aa000000"/>
+            android:tint="#aa000000"
+            app:layout_constraintEnd_toEndOf="@+id/runes_progress_imageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toTopOf="@+id/runes_progress_imageView"/>
     <ImageView
-            android:layout_width="150dp"
-            android:layout_height="120dp" app:srcCompat="@drawable/kobold_foreman_model"
-            android:id="@+id/neutral_progress_imageView" android:layout_marginTop="16dp"
+            android:layout_width="130dp"
+            android:layout_height="150dp" app:srcCompat="@drawable/kobold_foreman_model"
+            android:id="@+id/neutral_progress_imageView"
             app:layout_constraintTop_toBottomOf="@+id/neutrals_textView"
             app:layout_constraintStart_toEndOf="@+id/divider" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"/>
+            android:layout_marginRight="8dp" android:layout_marginTop="8dp"/>
+    <ImageView
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:src="@drawable/clip_source_kobold"
+            android:id="@+id/neutral_progress_dark_imageView"
+            app:layout_constraintStart_toStartOf="@+id/neutral_progress_imageView"
+            android:tint="#aa000000"
+            app:layout_constraintEnd_toEndOf="@+id/neutral_progress_imageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toTopOf="@+id/neutral_progress_imageView"/>
+
     <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

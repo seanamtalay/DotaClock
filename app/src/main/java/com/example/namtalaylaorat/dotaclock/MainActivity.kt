@@ -25,8 +25,10 @@ import android.widget.ImageView
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var mImageDrawable: Drawable
-    lateinit var img: ImageView
+    lateinit var darkBountyDrawable: Drawable
+    lateinit var darkBountyImageView: ImageView
+    lateinit var darkNeutralDrawable: Drawable
+    lateinit var darkNeutralImageView: ImageView
 
     enum class TimerState{
          Stopped, Paused, Running
@@ -65,9 +67,13 @@ class MainActivity : AppCompatActivity() {
 
 
         //progress image level from 0 - 10000
-        img = runes_progress_dark_imageView as ImageView
-        mImageDrawable = img.drawable as ClipDrawable
-        mImageDrawable.level = 0
+        darkBountyImageView = runes_progress_dark_imageView as ImageView
+        darkBountyDrawable = darkBountyImageView.drawable as ClipDrawable
+        darkBountyDrawable.level = 0
+
+        darkNeutralImageView = neutral_progress_dark_imageView as ImageView
+        darkNeutralDrawable = darkNeutralImageView.drawable as ClipDrawable
+        darkNeutralDrawable.level = 0
     }
 
     override fun onResume() {
@@ -133,6 +139,7 @@ class MainActivity : AppCompatActivity() {
 
                 checkTimeCondition(3L)
                 progressDarkOverlayBounty()
+                progressDarkOverlayNeutral()
             }
 
             override fun onFinish() = onTimerFinished()
@@ -193,7 +200,7 @@ class MainActivity : AppCompatActivity() {
         if(secondsRemaining%10 == (10L-secBefore)%10 && secondsRemaining != 0L){
             Toast.makeText(this@MainActivity, "10sec!", Toast.LENGTH_SHORT).show()
             //increasing the dark layer overtime
-            mImageDrawable.level = mImageDrawable.level + 1000
+            darkBountyDrawable.level = darkBountyDrawable.level + 1000
         }
 
         //Start match 0:00
@@ -205,13 +212,15 @@ class MainActivity : AppCompatActivity() {
         if((secondsRemaining%300) == (300L-secBefore)%300){
             Toast.makeText(this@MainActivity, "Runes!", Toast.LENGTH_SHORT).show()
             //clear bounty dark overlay progress
-            mImageDrawable.level = 0
+            darkBountyDrawable.level = 10000
 
         }
 
         //stack neutral creep. About every XX:52 seconds. Each camp stack time is not the same, so we are just going to use 52.
         if((secondsRemaining%60) == (52L-secBefore)%60){
             Toast.makeText(this@MainActivity, "Stack neutrals!", Toast.LENGTH_SHORT).show()
+            Log.e(TAG, "inside if")
+
         }
 
         //rosh?
@@ -223,7 +232,22 @@ class MainActivity : AppCompatActivity() {
      * Level range is 0 - 10000
      */
     private fun progressDarkOverlayBounty(){
-        mImageDrawable.level = mImageDrawable.level + 10000/300 //300 for 5 min(300sec)
+        //increment every second. mod 10000 at the end to reset when the process it the limit
+        darkBountyDrawable.level = 10000 - ((secondsRemaining.toInt() * 10000 / 300)%10000)
+        //Log.e(TAG, "current level: ${darkBountyDrawable.level}")
+
+    }
+
+    /**
+     * Make the neutral creep progress
+     * Level range is 0 - 10000
+     */
+    private fun progressDarkOverlayNeutral(){
+        //increment every second.
+        darkNeutralDrawable.level = 10000 - ((secondsRemaining.toInt()%60) * 10000 / 52)
+        //Log.e(TAG, "current level: ${darkNeutralDrawable.level}")
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
