@@ -18,11 +18,6 @@ import android.graphics.drawable.ClipDrawable
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 
-
-
-
-
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var darkBountyDrawable: Drawable
